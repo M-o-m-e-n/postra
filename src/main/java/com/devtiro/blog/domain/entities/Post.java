@@ -3,8 +3,6 @@ package com.devtiro.blog.domain.entities;
 import com.devtiro.blog.domain.PostStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.logging.log4j.util.Lazy;
-import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -73,12 +71,14 @@ public class Post {
         return Objects.hash(id, title, content, status, readingTime);
     }
 
+    @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
 
+    @PreUpdate
     protected void onUpdate(){
         this.updatedAt = LocalDateTime.now();
     }
