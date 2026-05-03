@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CategoryController {
 
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> listCategories(){
+    public ResponseEntity<List<CategoryDto>> listCategories() {
         List<CategoryDto> categories = this.categoryService.listCategories()
                 .stream().map(categoryMapper::toDto)
                 .toList();
@@ -32,8 +33,9 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<CategoryDto> createCategory(
-            @Valid @RequestBody CreateCategoryRequest createCategoryRequest){
+            @Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
         Category categoryToCreate = categoryMapper.toEntity(createCategoryRequest);
         Category savedCategory = categoryService.createCategory(categoryToCreate);
         return new ResponseEntity<>(
@@ -42,9 +44,9 @@ public class CategoryController {
         );
     }
 
-    @DeleteMapping(path ="/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable UUID id){
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable UUID id) {
         categoryService.deleteCategory(id);
-        return new ResponseEntity<> (HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
