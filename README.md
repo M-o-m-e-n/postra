@@ -1,4 +1,4 @@
-# Blog API
+# Postra
 
 Simple Spring Boot blog API with Keycloak JWT auth.
 
@@ -22,7 +22,7 @@ docker-compose up -d
 ```
 
 ## Keycloak setup
-- Create a realm named `blog`.
+- Create a realm named `postra`.
 - Create a client for this API and obtain tokens.
 - Assign the `admin` realm role to users who can create/update/delete.
 
