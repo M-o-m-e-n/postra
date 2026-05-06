@@ -32,6 +32,12 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDto> getCategory(@PathVariable UUID id) {
+        Category category = categoryService.getCategoryById(id);
+        return ResponseEntity.ok(categoryMapper.toDto(category));
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<CategoryDto> createCategory(
@@ -44,7 +50,18 @@ public class CategoryController {
         );
     }
 
+    @PutMapping(path = "/{id}")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<CategoryDto> updateCategory(
+            @PathVariable UUID id,
+            @Valid @RequestBody CreateCategoryRequest updateCategoryRequest) {
+        Category categoryToUpdate = categoryMapper.toEntity(updateCategoryRequest);
+        Category updatedCategory = categoryService.updateCategory(id, categoryToUpdate);
+        return ResponseEntity.ok(categoryMapper.toDto(updatedCategory));
+    }
+
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<Void> deleteCategory(@PathVariable UUID id) {
         categoryService.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
