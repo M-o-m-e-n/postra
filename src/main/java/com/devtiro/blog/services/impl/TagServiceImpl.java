@@ -21,6 +21,12 @@ public class TagServiceImpl implements TagService {
         return tagRepository.findAllWithPostCount();
     }
 
+    @Override
+    public Tag getTagById(UUID id) {
+        return tagRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Tag not found: " + id));
+    }
+
     @Transactional
     @Override
     public List<Tag> createTags(Set<String> tagNames) {
@@ -38,6 +44,17 @@ public class TagServiceImpl implements TagService {
         }
         savedTags.addAll(existingTags);
         return savedTags;
+    }
+
+    @Override
+    @Transactional
+    public Tag updateTag(UUID id, String name) {
+        Tag existingTag = getTagById(id);
+        if (!existingTag.getName().equalsIgnoreCase(name) && tagRepository.existsByNameIgnoreCase(name)) {
+            throw new IllegalArgumentException("Tag already exists with name: " + name + ".");
+        }
+        existingTag.setName(name);
+        return tagRepository.save(existingTag);
     }
 
     @Transactional
