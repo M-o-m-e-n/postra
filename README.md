@@ -54,7 +54,7 @@ Admin only (requires `admin` realm role):
 Create a category (admin only):
 
 ```powershell
-Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/categories `
+Invoke-RestMethod -Method Post -Uri http://localhost:8081/api/v1/categories `
   -Headers @{ Authorization = "Bearer <token>" } `
   -ContentType "application/json" `
   -Body '{"name":"Java"}'
@@ -63,7 +63,7 @@ Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/categories `
 Create a post (admin only):
 
 ```powershell
-Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/posts `
+Invoke-RestMethod -Method Post -Uri http://localhost:8081/api/v1/posts `
   -Headers @{ Authorization = "Bearer <token>" } `
   -ContentType "application/json" `
   -Body '{"title":"Intro","content":"Long enough content...","categoryId":"<uuid>","readingTime":4,"tagIds":["<uuid>"]}'
